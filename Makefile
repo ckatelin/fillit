@@ -6,12 +6,12 @@
 #    By: ckatelin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/17 14:24:36 by ckatelin          #+#    #+#              #
-#    Updated: 2019/04/17 14:27:48 by ckatelin         ###   ########.fr        #
+#    Updated: 2019/04/19 18:04:05 by ckatelin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FLAG = -Wall -Wextra -Werror 
-SRCS = *.c
+SRCS = main.c store_pieces.c get_next_line/get_next_line.c get_next_line/libft/libft.a
 HEADER = fillit.h
 NAME = fillit
 
