@@ -11,85 +11,81 @@
 /* ************************************************************************** */
 
 #include "fillit.h"
+#include <stdio.h>
 
-static	int	ft_check_dline(char **str)
+static	int	ft_check_dlina(char *str)
 {
 	int i;
 
 	i = 0;
-	while ((*str[i] != '\n' || *str[i] != '\0') && i < 5)
+	while ((str[i] != '\n' || str[i] != '\0') && i < 5)
 		i++;
 	if (i == 5)
 		return (1);
 	return (0);
 }
 
-static	int ft_check_val(int **mas)
+static	int ft_check_val(int *mas)
 {
-	int k;
 	int i;
 	int count;
 
-	while (mas[k])
+	i = 0;
+	count = 0;
+	while (i < 16)
 	{
-		i = -1;
-		count = 0;
-		while (mas[k][++i])
+		if (mas[i] == 1)
 		{
-			if (k < 4 && i < 4)
-			{
-				if ((mas[k + 1][i + 1] + mas[k][i]) == 1 &&
-						(mas[k][i] + mas[k + 1][i + 1] + mas[k + 1][i] + mas[k][i + 1] == 4))
-					return (0);
-			}
-			if (mas[k][i] == 1)
+			if ((i + 1) <= 16 && mas[i + 1] == 1)
 				count++;
-			if (count > 4)
-				return (0);
+			if ((i - 1) >= 0 && mas[i - 1] == 1)
+				count++;
+			if ((i + 4) <= 16 && mas[i + 4] == 1)
+				count++;
+			if ((i - 4) >= 0 && mas[i - 4] == 1)
+				count++;
 		}
-		k++;
+		i++;
 	}
+	if (count != 6 && count != 8)
+		return (0);
+	return (1);
 }
 
-static	int	ft_check_pos(int fd, char **line, int figures)
+static	int	ft_check_pos(char *file, char **line, int figures)
 {
-	int k;
-	static int *checking;
+	int *checking;
 	int i;
+	int fd;
 
-	k = 0;
+	fd = open(file, O_RDONLY);
 	i = 0;
-	if (!(checking = (int **)malloc(sizeof(int *) * (figures))))
-		return (0);
+	checking = (int *)malloc(sizeof(int) * 5);
 	while (get_next_line(fd, line) == 1)
 	{
-		if (!(checking[k] = (int *)malloc(sizeof(int) * 5)))
-			return (0);
-		if (*line != "\n")
+		if (*line[0] != '\n')
 		{
 			while (*line[i] != '\n' || *line[i] != '\0')
 			{
 				if (*line[i] == '.')
-					checking[k][i++] = 0;
+					checking[i++] = 0;
 				else if (*line[i] == '#')
-					checking[k][i++] = 1;
+					checking[i++] = 1;
 				else
+				{
+					close(fd);
 					return (0);
+				}
 			}
 		}
 		else
 		{
-			k++;
+			if (ft_check_val(checking) == 0)
+				return (0);
 			i = 0;
 		}
 	}
-	checking[k] = 0;
-	if (ft_check_val(checking) == 0)
-	{
-		ft_strdel(&strdel); //NEED FREE ALL
-		return (0);
-	}
-	ft_strdel(&checking); //NEED FREE ALL
+	close(fd);
 	return (1);
 }
 
@@ -97,29 +93,82 @@ int		check_validation(int fd) //BETTER PUT TO ARGUMENTS
 {
 	int count;
 	int red;
-	int *line;
+	char **line;
 	int i;
+//	int fd;
+	int *checking;
+	char *mas;
+	int j;
+	int k;
 
+	j = 0;
 	red = 0;
 	count = 0;
-	while (get_next_line(fd, &line) == 1)
+//	fd = open(file, O_RDONLY);
+	printf("fd = %d\n", fd);
+	i = 0;
+	checking = (int *)malloc(sizeof(int) * 5);
+	while (get_next_line(fd, line) == 1)
 	{
-		if (*line != "\n" && count < 4 && ft_check_dlina(&line))
+		printf("%s\n", *line);
+		mas = *line;
+		if (ft_strcmp((const char *)line, "\n") && count < 4 && ft_check_dlina(*line)) //I AM NOT SURE ABOUT STRCMP
 		{
+			while (i < 4)
+			{
+//				printf("%c", mas[i]);
+				if (mas[i] == '.')
+					checking[j++] = 0;
+				else if (mas[i] == '#')
+					checking[j++] = 1;
+//				printf("%d", checking[j - 1]);
+				else
+					return (0);
+				i++;
+			}
+//			while (j >= 0)
+//				printf("%d, ", mas[j--]);
+			i = 0;
 			count++;
-			i++;
+			continue ;
 		}
-		if (count == 4 && *line == "\n") //I AM NOT SURE ABOIT "\n"
+		printf("%d\n", count);
+		printf("%s", *line);
+		if (count == 4) //I AM NOT SURE ABOIT "\n"
+		{
+			k = 0;
+			while (k <= 12)
+			{
+				printf("%d%d%d%d\n", checking[k], checking[k + 1], checking[k + 2], checking[k + 3]);
+				k += 4;
+			}
+			if (ft_check_val(checking) == 0)
+				return (0);
+			j = 0;
 			count = 0;
+		}
+
 		else
 			red = 1;
 		if (red)
-			break ;
+			return (0);
 	}
-	if (red && ft_check_pos(fd, &line), (i / 4)) //NEED NEW FD BECAUSE MAY BE READ IS ALREADY 0
+//	close(fd);
+	printf("red = %d\n", red);
+/*	if (!red && ft_check_pos(file, line, (i / 4))) //NEED NEW FD BECAUSE MAY BE READ IS ALREADY 0
 	{
-		print_error;
+		print_error();
 		return (0);
 	}
+
 	return (1);
-}
+}*/
+/*int check_validation(int fd)
+{
+	char **line;
+
+	while (get_next_line(fd, line) == 1)
+		printf("%s", *line);
+	//return (fd);
+	return (0);
+}*/
