@@ -11,15 +11,19 @@
 /* ************************************************************************** */
 
 #include "fillit.h"
+#include <stdio.h>
 
 int		main(int argc, char **argv)
 {
 	int fd;
+	int res;
 
 	if (argc == 2)
 	{
 		fd = open(argv[1], O_RDONLY);
-		fillit(&store_pieces(fd));
+//		fillit(&store_pieces(fd));
+//		printf("%d\n", fd);
+		printf("%d\n",check_validation(fd));
 	}
 	return (0);
 }

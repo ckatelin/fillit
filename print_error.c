@@ -14,12 +14,14 @@
 
 void	print_error(void)
 {
-	char error[6];
+	char *error;
+	int i;
 
+	i = 0;
 	error = "error";
-	while (*error)
+	while (error[i])
 	{
-		ft_putchar(*error);
-		error++;
+		ft_putchar(error[i]);
+		i++;
 	}
 }
