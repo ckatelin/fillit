@@ -125,7 +125,6 @@ int		check_validation(int fd)
 			count++;
 			continue;
 		}
-		printf("%d\n", count);
 		if (count == 4)
 		{
 			if (ft_check_val(checking) == 0)

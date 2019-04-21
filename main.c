@@ -6,15 +6,13 @@
 /*   By: smorty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 15:58:37 by smorty            #+#    #+#             */
-/*   Updated: 2019/04/21 15:21:25 by ckatelin         ###   ########.fr       */
+/*   Updated: 2019/04/21 21:37:55 by smorty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-#include <stdio.h>
-
-static void print_figures(t_tetris **list)
+/*static void print_figures(t_tetris **list)
 {
 	int i;
 
@@ -23,16 +21,14 @@ static void print_figures(t_tetris **list)
 	{
 		while ((*list)->figure[i])
 		{
-			printf("%s\n", (*list)->figure[i]);
+			ft_putendl((*list)->figure[i]);
 			i++;
 		}
-		printf("rows: %d\n", (*list)->rows);
-		printf("cols: %d\n", (*list)->cols);
-		printf("\n");
+		ft_putchar('\n');
 		print_figures(&(*list)->next);
 	}
 }
-
+*/
 int		main(int argc, char **argv)
 {
 	int fd;
@@ -41,7 +37,7 @@ int		main(int argc, char **argv)
 	if (argc == 2)
 	{
 		fd = open(argv[1], O_RDONLY);
-		if (!(print_error(check_validation(fd))))
+		if (print_error(check_validation(fd)) == 0)
 		{
 			close(fd);
 			return (0);
@@ -49,7 +45,7 @@ int		main(int argc, char **argv)
 		close(fd);
 		fd = open(argv[1], O_RDONLY);
 		new = store_tetris(fd);
-		print_figures(&new);
+//		print_figures(&new);
 		fillit(&new);
 	}
 	return (0);
