@@ -6,11 +6,7 @@
 /*   By: ckatelin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 15:08:24 by ckatelin          #+#    #+#             */
-//<<<<<<< HEAD
-/*   Updated: 2019/04/19 18:03:45 by ckatelin         ###   ########.fr       */
-//=======
-/*   Updated: 2019/04/19 17:59:47 by smorty           ###   ########.fr       */
-//>>>>>>> 5ce33c7deee45578b34f87bd36ba05142013fdb1
+/*   Updated: 2019/04/21 15:12:41 by ckatelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +15,13 @@
 
 # include "get_next_line/get_next_line.h"
 
-typedef struct	s_piece
+typedef struct	s_tetris
 {
-	char	fig[4][4];
+	char	**figure;
 	int		rows;
 	int		cols;
-	struct s_piece	*next;
-}				t_piece;
+	struct s_tetris	*next;
+}				t_tetris;
 
 typedef	struct	s_position
 {
@@ -33,9 +29,9 @@ typedef	struct	s_position
 	int y;
 }		t_position;
 
-void	print_error(void);
+int 	print_error(int res);
 int		check_validation(int fd);
-t_piece	*store_pieces(int fd);
-void	fillit(t_piece **list);
+t_tetris *store_tetris(int fd);
+void	fillit(t_tetris **list);
 
 #endif
