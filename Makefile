@@ -6,7 +6,7 @@
 #    By: ckatelin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/17 14:24:36 by ckatelin          #+#    #+#              #
-#    Updated: 2019/04/21 15:11:37 by ckatelin         ###   ########.fr        #
+#    Updated: 2019/04/22 17:13:12 by ckatelin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME = fillit
 all: $(NAME)
 
 $(NAME):
-	gcc $(FLAG) $(SRCS) -I $(HEADER) -o $(NAME)
+	gcc $(SRCS) -I $(HEADER) -o $(NAME)
 
 clean:
 	rm -f *.o

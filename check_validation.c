@@ -6,14 +6,11 @@
 /*   By: ckatelin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 14:28:25 by ckatelin          #+#    #+#             */
-/*   Updated: 2019/04/21 17:21:54 by ckatelin         ###   ########.fr       */
+/*   Updated: 2019/04/22 17:16:47 by ckatelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include <stdio.h>
-
-// проуверить освобождвет ли память memdel
 
 static	int	ft_check_dlina(char *str)
 {
@@ -41,20 +38,7 @@ static int ft_check_dots(char *mas)
 	return (0);
 }
 
-static	int *ft_pull_checking(int *checking, int i, char *mas, int j)
-{
-			while (i < 4)
-			{
-				if (mas[i] == '.')
-					checking[j++] = 0;
-				else if (mas[i] == '#')
-					checking[j++] = 1;
-				i++;
-			}
-			return (checking);
-}
-
-static	int ft_check_val(int *mas)
+static	int ft_check_val(char *mas)
 {
 	int i;
 	int count;
@@ -65,15 +49,15 @@ static	int ft_check_val(int *mas)
 	res = 0;
 	while (++i < 16)
 	{
-		if (mas[i] == 1)
+		if (mas[i] == '#')
 		{
-			if ((i + 1) < 16 && (i % 4) != 3 && mas[i + 1] == 1)
+			if ((i + 1) < 16 && (i % 4) != 3 && mas[i + 1] == '#')
 				count++;
-			if ((i - 1) >= 0 && (i % 4) != 0 && mas[i - 1] == 1)
+			if ((i - 1) >= 0 && (i % 4) != 0 && mas[i - 1] == '#')
 				count++;
-			if ((i + 4) < 16 && mas[i + 4] == 1)
+			if ((i + 4) < 16 && mas[i + 4] == '#')
 				count++;
-			if ((i - 4) >= 0 && mas[i - 4] == 1)
+			if ((i - 4) >= 0 && mas[i - 4] == '#')
 				count++;
 			res++;
 		}
@@ -83,61 +67,42 @@ static	int ft_check_val(int *mas)
 	return (1);
 }
 
-static int ft_intdel(int *mas)
+static int ft_strdeldel(char *str, int i)
 {
-	if (mas && *mas)
-	{
-		free(mas);
-		mas = NULL;
-	}
-	return (0);
+	ft_strdel(&str);
+	return (i);
 }
 
-static void ft_intdeldel(int *mas)
+int		check_validation(int fd, int figures, int count, int j) 
 {
-	if (mas && *mas)
-	{
-		free(mas);
-		mas = NULL;
-	}
-}
-
-int		check_validation(int fd) 
-{
-	int count;
 	char *line;
-	int *checking;
-	int j;
-	int figures;
+	char *checking;
 
-	j = 0;
-	count = 0;
-	figures = 0;
-	checking = (int *)malloc(sizeof(int) * 16);
-	while (get_next_line(fd, &line) == 1 && figures < 26) // <= OR < ? NNED CHECK
+	if (count == 0)
+		checking = ft_strnew(0);
+	while (get_next_line(fd, &line) == 1 && figures < 26)
 	{
-		if (ft_strcmp((const char *)line, "\n") && count < 4 && ft_check_dlina(line))
+		if (count < 4 && ft_check_dlina(line))
 		{
 			if (ft_check_dots(line) || line[4] != '\0')
-					return (ft_intdel(checking));
-			checking = ft_pull_checking(checking, 0, line, j);
+					return (ft_strdeldel(checking, 0));
+			if (!(checking = ft_strjoin(checking, line)))
+				return (0);
 			j += 4;
-			count++;
-			continue;
+			check_validation(fd, figures, ++count, j);
 		}
 		if (count == 4)
 		{
 			if (ft_check_val(checking) == 0)
-				return(ft_intdel(checking));
-			j = 0;
-			count = 0;
-			figures++;
+				return(ft_strdeldel(checking, 0));
+			ft_strdel(&checking);
+			check_validation(fd, ++figures, 0, 0);
 		}
 		else
-			return (ft_intdel(checking));
+			return (ft_strdeldel(checking, 0));
 	}
 	if (count != 4 || ft_check_val(checking) == 0)
-			return (ft_intdel(checking));
-	ft_intdeldel(checking);
+			return (ft_strdeldel(checking, 0));
+//	return (ft_strdeldel(checking, 1));
 	return (1);
 }

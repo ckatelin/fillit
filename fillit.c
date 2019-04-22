@@ -6,7 +6,7 @@
 /*   By: smorty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 17:25:30 by smorty            #+#    #+#             */
-/*   Updated: 2019/04/21 21:36:25 by smorty           ###   ########.fr       */
+/*   Updated: 2019/04/22 14:38:32 by ckatelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,8 @@ void	fillit(t_tetris **list)
 	unsigned int y;
 	int res;
 
-	size = 3;
-	while (size < 20)
+	size = 6;
+	while (size < 26)
 	{
 		y = 0;
 		while (y < size)

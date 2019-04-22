@@ -6,7 +6,7 @@
 /*   By: smorty <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/19 15:58:37 by smorty            #+#    #+#             */
-/*   Updated: 2019/04/21 21:37:55 by smorty           ###   ########.fr       */
+/*   Updated: 2019/04/22 16:30:15 by ckatelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		main(int argc, char **argv)
 	if (argc == 2)
 	{
 		fd = open(argv[1], O_RDONLY);
-		if (print_error(check_validation(fd)) == 0)
+		if (print_error(check_validation(fd, 0, 0, 0)) == 0)
 		{
 			close(fd);
 			return (0);

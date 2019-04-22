@@ -6,7 +6,7 @@
 /*   By: ckatelin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 15:08:24 by ckatelin          #+#    #+#             */
-/*   Updated: 2019/04/21 15:12:41 by ckatelin         ###   ########.fr       */
+/*   Updated: 2019/04/22 16:30:02 by ckatelin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef	struct	s_position
 }		t_position;
 
 int 	print_error(int res);
-int		check_validation(int fd);
+int		check_validation(int fd, int figures, int count, int j);
 t_tetris *store_tetris(int fd);
 void	fillit(t_tetris **list);
 
